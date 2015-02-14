@@ -1,12 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\Space Shooter\Assets\Scripts\DestroyByContact.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerShip.cs">
     <Files>
-      <File FileName="..\Space Shooter\Assets\Scripts\Mover.cs" Line="1" Column="1" />
-      <File FileName="..\Space Shooter\Assets\Scripts\PlayerController.cs" Line="50" Column="1" />
-      <File FileName="..\Space Shooter\Assets\Scripts\DestroyByContact.cs" Line="26" Column="3" />
-      <File FileName="..\Space Shooter\Assets\Scripts\DestroyByTime.cs" Line="1" Column="1" />
-      <File FileName="..\Space Shooter\Assets\Scripts\GameController.cs" Line="78" Column="3" />
+      <File FileName="Assets\Scripts\HomePlanet.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerShip.cs" Line="4" Column="24" />
+      <File FileName="Assets\Scripts\EnemyTarget.cs" Line="4" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
