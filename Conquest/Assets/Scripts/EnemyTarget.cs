@@ -15,11 +15,11 @@ public class EnemyTarget : MonoBehaviour {
 
 	void OnMouseOver (){
 		if (Input.GetButton("Fire1")){
-			player.SendMessage ("changeTarget", transform);
+			player.SendMessage ("ChangeTarget", transform);
 		}
 	}
 	void OnMouseExit (){
-		player.SendMessage ("removeTarget");
+		player.SendMessage ("RemoveTarget");
 	}
 	void OnTriggerEnter (Collider other){
 		if (other.tag == "Ship"){
