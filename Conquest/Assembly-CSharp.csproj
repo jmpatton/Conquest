@@ -54,7 +54,6 @@
      <Compile Include="Assets\Scripts\ObjectLabel.cs" />
      <Compile Include="Assets\Scripts\PlanetController.cs" />
      <Compile Include="Assets\Scripts\PlayerShip.cs" />
-     <Compile Include="Assets\Scripts\TargetEnemy.cs" />
      <None Include="Assets\Planet001\ReadMe.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.2/UnityEngine.UI.dll</HintPath>
