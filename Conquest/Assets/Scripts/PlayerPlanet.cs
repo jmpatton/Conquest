@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class HomePlanet : MonoBehaviour {
+public class PlayerPlanet : MonoBehaviour {
 	//Gives target information that it can then send to the ships.
 	private Transform target;
 	//Used to send the status of the planet (for now just the ship count) to a gui text.
@@ -22,7 +22,8 @@ public class HomePlanet : MonoBehaviour {
 	}
 
 	void Update () {
-		ships += Time.deltaTime;
+		if (ships < 50)
+			ships += Time.deltaTime;
 		//Checks to see if the planet is targeted.
 		if (isTargeted){
 			//If the planet is targeted, outputs the status of the planet to a GUI text.
@@ -34,8 +35,12 @@ public class HomePlanet : MonoBehaviour {
 		 * D. if it has any ships to send. */
 		if (Input.GetButton ("Fire1") && target && isTargeted && ships > 1 ){
 			// This very long line essentially spawns a ship and tells it where to go.
+			//int send = ships * ;
+			while (ships > 1){
 			(Instantiate(ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage ("changeTarget", target);
 			ships--;
+			}
+
 		}
 		else {
 			/* Checks whether to "deselect" or untarget the planet.  

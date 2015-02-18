@@ -49,10 +49,10 @@
      <Compile Include="Assets\Scripts\EnemyPlanetController.cs" />
      <Compile Include="Assets\Scripts\EnemyTarget.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
-     <Compile Include="Assets\Scripts\HomePlanet.cs" />
      <Compile Include="Assets\Scripts\Mover.cs" />
      <Compile Include="Assets\Scripts\ObjectLabel.cs" />
      <Compile Include="Assets\Scripts\PlanetController.cs" />
+     <Compile Include="Assets\Scripts\PlayerPlanet.cs" />
      <Compile Include="Assets\Scripts\PlayerShip.cs" />
      <None Include="Assets\Planet001\ReadMe.txt" />
  <Reference Include="UnityEngine.UI">

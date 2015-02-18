@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PlayerShip : MonoBehaviour {
-	private Transform target;
+	public Transform target;
 	private NavMeshAgent navComponent;
 	// Use this for initialization
 	void Start () {

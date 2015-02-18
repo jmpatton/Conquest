@@ -17,6 +17,7 @@ public class EnemyTarget : MonoBehaviour {
 		/*Checks to see if the player is clicking on the planet. If they are, 
 		 * sends the transform information to the player. */
 		if (Input.GetButton("Fire1")){
+			//player = GameObject.FindGameObjectsWithTag("Player").
 			player.SendMessage ("ChangeTarget", transform);
 		}
 	}
@@ -26,7 +27,7 @@ public class EnemyTarget : MonoBehaviour {
 	}
 	void OnTriggerEnter (Collider other){
 		// Destroys any ship object it encounters.
-		if (other.tag == "Ship"){
+		if (other.tag == "Ship" && (other.GetComponent<PlayerShip>().target == transform)){
 			Destroy (other.gameObject);
 		}
 	}
