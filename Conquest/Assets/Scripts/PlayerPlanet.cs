@@ -14,7 +14,7 @@ public class PlayerPlanet : MonoBehaviour {
 	//Sets the location to spawn the ships.
 	public Transform shipSpawn;
 	//Tells the planet whether it is targeted, or selected, or not.
-	private bool isTargeted = false;
+	public bool isTargeted = false;
 	//Tells whether the mouse is over the planet or not.  Used to change the isTargeted variable.
 	private bool mouseOn = true;
 	void Start () {
@@ -34,11 +34,12 @@ public class PlayerPlanet : MonoBehaviour {
 		 * C. if the ship itself is "targeted" by the player, or selected, and
 		 * D. if it has any ships to send. */
 		if (Input.GetButton ("Fire1") && target && isTargeted && ships > 1 ){
-			// This very long line essentially spawns a ship and tells it where to go.
+
 			//int send = ships * ;
 			while (ships > 1){
-			(Instantiate(ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage ("changeTarget", target);
-			ships--;
+				// This very long line essentially spawns a ship and tells it where to go.
+				(Instantiate(ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage ("changeTarget", target);
+				ships--;
 			}
 
 		}
