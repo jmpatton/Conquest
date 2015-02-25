@@ -5,6 +5,7 @@ public class EnemyTarget : MonoBehaviour {
 	
 	public GameObject player;
 	private GameObject [] players;
+   // private GameObject[] planets;
 	// Use this for initialization
 	void Start () {
 		players = GameObject.FindGameObjectsWithTag ("Player");
@@ -25,8 +26,10 @@ public class EnemyTarget : MonoBehaviour {
 					break;
 				}
 			}
-			if (player)
+			if (player){
 				player.SendMessage ("ChangeTarget", transform);
+				player.AddComponent("StartScript");
+			}
 		}
 	}
 	void OnMouseExit (){
