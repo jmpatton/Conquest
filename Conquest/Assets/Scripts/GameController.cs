@@ -48,6 +48,8 @@ public class GameController : MonoBehaviour {
             EndGame("You Win!");
         }
 
+		CalculateAITurn ();
+
 	}
 
 	public void EndGame(string message)
@@ -59,6 +61,29 @@ public class GameController : MonoBehaviour {
     {
         Application.LoadLevel(Application.loadedLevel);
     }
+
+	void CalculateAITurn()
+	{
+		foreach (GameObject i in planets)
+		{
+			if (i.tag == "Enemy")
+			{
+				i.SendMessage ("changeTarget", GetAITarget());
+			}
+		}
+	}
+
+	Transform GetAITarget()
+	{
+		foreach (GameObject i in planets)
+		{
+			if (i.tag != "Enemy")
+			{
+				return i.transform;
+			}
+		}
+		return null;
+	}
 
     void NextLevel()
     {
