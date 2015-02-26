@@ -17,15 +17,22 @@ public class PlayerPlanet : MonoBehaviour {
 	public bool isTargeted = false;
 	//Tells whether the mouse is over the planet or not.  Used to change the isTargeted variable.
 	private bool mouseOn = true;
+	//used to highlight planet
 	public GameObject hightlight;
+	//used to display shipcount
+	private GUIText shipCountText;
+	public int productionRate;
 
 	void Start () {
 		status.text = "";
+		shipCountText = GetComponentInChildren<GUIText> ();//finds the GUIText for the label
 	}
 
 	void Update () {
+		//update text on shipcount label
+		shipCountText.text = ((int)ships).ToString ();
 		if (ships < 50)
-			ships += Time.deltaTime;
+			ships += Time.deltaTime * (float)productionRate;//added in the ability to change production rate
 		//Checks to see if the planet is targeted.
 		if (isTargeted) {
 						//If the planet is targeted, outputs the status of the planet to a GUI text.
