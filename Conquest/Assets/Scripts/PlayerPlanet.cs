@@ -32,8 +32,7 @@ public class PlayerPlanet : MonoBehaviour {
 	void Update () {
 		//update text on shipcount label
 		shipCountText.text = ((int)ships).ToString ();
-		if (ships < shipCapacity)
-			ships += Time.deltaTime * (float)productionRate;//added in the ability to change production rate
+		ProduceShips ();
 		//Checks to see if the planet is targeted.
 		if (isTargeted) {
 						//If the planet is targeted, outputs the status of the planet to a GUI text.
@@ -86,5 +85,12 @@ public class PlayerPlanet : MonoBehaviour {
 	//Changes the mouseOn variable once the mouse leaves the area.  Needed to remove it as the target or selection.
 	void OnMouseExit (){
 		mouseOn = false;
+	}
+
+	private void ProduceShips ()
+	{
+		if (ships < shipCapacity) {
+			ships += Time.deltaTime * (float)productionRate;
+		}
 	}
 }
