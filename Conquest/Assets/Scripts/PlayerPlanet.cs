@@ -17,6 +17,8 @@ public class PlayerPlanet : MonoBehaviour {
 	public bool isTargeted = false;
 	//Tells whether the mouse is over the planet or not.  Used to change the isTargeted variable.
 	private bool mouseOn = true;
+	public GameObject hightlight;
+
 	void Start () {
 		status.text = "";
 	}
@@ -25,9 +27,14 @@ public class PlayerPlanet : MonoBehaviour {
 		if (ships < 50)
 			ships += Time.deltaTime;
 		//Checks to see if the planet is targeted.
-		if (isTargeted){
-			//If the planet is targeted, outputs the status of the planet to a GUI text.
-			status.text = ((int)ships).ToString ();
+		if (isTargeted) {
+						//If the planet is targeted, outputs the status of the planet to a GUI text.
+						status.text = ((int)ships).ToString ();
+
+						//display the highlight circle around planet
+						hightlight.active = true;
+		} else {
+			hightlight.active = false;
 		}
 		/* Checks whether the planet should send ships or not, based on A. if the mouse is clicked,
 		 * B. if the planet has a target (AKA an enemy planet), 
@@ -41,7 +48,6 @@ public class PlayerPlanet : MonoBehaviour {
 				(Instantiate(ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage ("changeTarget", target);
 				ships--;
 			}
-
 		}
 		else {
 			/* Checks whether to "deselect" or untarget the planet.  
