@@ -21,7 +21,8 @@ public class PlayerPlanet : MonoBehaviour {
 	public GameObject hightlight;
 	//used to display shipcount
 	private GUIText shipCountText;
-	public int productionRate;
+	public int productionRate;//determines the how many ships produced per second
+	public int shipCapacity;//ship production halts if this limit is reached.
 
 	void Start () {
 		status.text = "";
@@ -31,7 +32,7 @@ public class PlayerPlanet : MonoBehaviour {
 	void Update () {
 		//update text on shipcount label
 		shipCountText.text = ((int)ships).ToString ();
-		if (ships < 50)
+		if (ships < shipCapacity)
 			ships += Time.deltaTime * (float)productionRate;//added in the ability to change production rate
 		//Checks to see if the planet is targeted.
 		if (isTargeted) {
