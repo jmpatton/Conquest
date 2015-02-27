@@ -35,12 +35,12 @@ public class PlayerPlanet : MonoBehaviour {
 		ProduceShips ();
 		//Checks to see if the planet is targeted.
 		if (isTargeted) {
-						//If the planet is targeted, outputs the status of the planet to a GUI text.
-						status.text = ((int)ships).ToString ();
-
-						//display the highlight circle around planet
-						hightlight.active = true;
-		} else {
+			//If the planet is targeted, outputs the status of the planet to a GUI text.
+			status.text = ((int)ships).ToString ();
+			//display the highlight circle around planet
+			hightlight.active = true;
+		}
+		else {
 			hightlight.active = false;
 		}
 		/* Checks whether the planet should send ships or not, based on A. if the mouse is clicked,
@@ -89,12 +89,12 @@ public class PlayerPlanet : MonoBehaviour {
 
 	public void SendShips(Transform t)
 	{
-				//int send = ships * ;
-				while (ships > 1) {
-						// This very long line essentially spawns a ship and tells it where to go.
-						(Instantiate (ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage ("changeTarget", t);
-						ships--;
-			}
+		//int send = ships * ;
+		while (ships > 1) {
+			// This very long line essentially spawns a ship and tells it where to go.
+			(Instantiate (ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage ("changeTarget", t);
+			ships--;
+		}
 	}
 
 	private void ProduceShips ()
