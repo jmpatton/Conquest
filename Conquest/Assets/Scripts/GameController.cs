@@ -62,8 +62,6 @@ public class GameController : MonoBehaviour {
             EndGame("You Win!");
         }
    		CalculateAITurn ();
-
-
 	}
 
 	public void EndGame(string message)
@@ -87,21 +85,28 @@ public class GameController : MonoBehaviour {
         {
             if (i.tag == "Enemy")
             {
-                i.SendMessage("SendShips", GetAITarget());
+				if (i.GetComponent<PlayerPlanet>().ships > 10)
+				{
+					i.SendMessage("SendShips", GetAITarget(i));
+				}
             }
         }
     }
 
-    Transform GetAITarget()
+    Transform GetAITarget(GameObject currentPlanet)
     {
+		Transform currentLocation = currentPlanet.transform;
+		Transform newTarget = new GameObject().transform;
+		float distance = 10000;
         foreach (GameObject i in planets)
         {
-            if (i.tag != "Enemy")
+			if (i.tag != "Enemy" && Vector3.Distance (i.transform.position, currentLocation.position) < distance)
             {
-                return i.transform;
+				distance = Vector3.Distance (i.transform.position, currentLocation.position);
+                newTarget = i.transform;
             }
         }
-        return null;
+        return newTarget;
     }
 
 }
