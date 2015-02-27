@@ -87,6 +87,16 @@ public class PlayerPlanet : MonoBehaviour {
 		mouseOn = false;
 	}
 
+	public void SendShips(Transform t)
+	{
+				//int send = ships * ;
+				while (ships > 1) {
+						// This very long line essentially spawns a ship and tells it where to go.
+						(Instantiate (ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage ("changeTarget", t);
+						ships--;
+			}
+	}
+
 	private void ProduceShips ()
 	{
 		if (ships < shipCapacity) {

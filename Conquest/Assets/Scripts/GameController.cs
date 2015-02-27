@@ -68,7 +68,7 @@ public class GameController : MonoBehaviour {
 		{
 			if (i.tag == "Enemy")
 			{
-				i.SendMessage ("changeTarget", GetAITarget());
+				i.SendMessage ("SendShips",GetAITarget());
 			}
 		}
 	}
