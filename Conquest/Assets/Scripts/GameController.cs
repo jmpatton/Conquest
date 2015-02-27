@@ -48,6 +48,8 @@ public class GameController : MonoBehaviour {
             levelButton.enabled = true;
             levelButton.GetComponent<CanvasRenderer>().SetAlpha(1);
             levelText.text = "Restart Level";
+            levelButton.onClick.RemoveAllListeners();
+            levelButton.onClick.AddListener(() => { RestartLevel(); });
         }
         if (count == planets.Count)
         {

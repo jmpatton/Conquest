@@ -5,8 +5,6 @@ using UnityEngine.UI;
 public class PlayerPlanet : MonoBehaviour {
 	//Gives target information that it can then send to the ships.
 	private Transform target;
-	//Used to send the status of the planet (for now just the ship count) to a gui text.
-	public Text status;
 	//The number of ships currently in possession.
 	public float ships;
 	//Allows you to set a ship object.
@@ -25,7 +23,6 @@ public class PlayerPlanet : MonoBehaviour {
 	public int shipCapacity;//ship production halts if this limit is reached.
 
 	void Start () {
-		status.text = "";
 		shipCountText = GetComponentInChildren<GUIText> ();//finds the GUIText for the label
 	}
 
@@ -35,13 +32,11 @@ public class PlayerPlanet : MonoBehaviour {
 		ProduceShips ();
 		//Checks to see if the planet is targeted.
 		if (isTargeted) {
-			//If the planet is targeted, outputs the status of the planet to a GUI text.
-			status.text = ((int)ships).ToString ();
 			//display the highlight circle around planet
-			hightlight.active = true;
+            hightlight.SetActive(true);
 		}
 		else {
-			hightlight.active = false;
+			hightlight.SetActive(false);
 		}
 		/* Checks whether the planet should send ships or not, based on A. if the mouse is clicked,
 		 * B. if the planet has a target (AKA an enemy planet), 
@@ -62,7 +57,6 @@ public class PlayerPlanet : MonoBehaviour {
 			 * on an enemy planet. */
 			if (Input.GetButton ("Fire1") && !target && !mouseOn){
 				isTargeted = false;
-				status.text = "";
 			}
 		}
 	}
