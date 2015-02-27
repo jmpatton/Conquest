@@ -110,7 +110,7 @@ public class PlayerPlanet : MonoBehaviour {
 		}
 		else
 		{
-			this.gameObject.tag = planetOwner;
+			this.gameObject.tag = shipOwner;
 		}
 	}
 
