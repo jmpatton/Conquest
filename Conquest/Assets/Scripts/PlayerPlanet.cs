@@ -88,7 +88,11 @@ public class PlayerPlanet : MonoBehaviour {
                  * on an enemy planet. */
                 if (Input.GetButton("Fire1") && !target && !mouseOn)
                 {
-                    isTargeted = false;
+                    if (!Input.GetButton("Fire3"))
+                    {
+
+                        isTargeted = false;
+                    }
                 }
             }
         }
@@ -124,14 +128,14 @@ public class PlayerPlanet : MonoBehaviour {
                     {
                         if (i.GetComponent<PlayerPlanet>().isTargeted && i.tag == "Player")
                         {
-                            player = i;
-                            break;
+                            i.SendMessage("ChangeTarget", transform);
+                            //break;
                         }
                     }
-                    if (player)
-                    {
-                        player.SendMessage("ChangeTarget", transform);
-                    }
+                    //if (player)
+                    //{
+                    //    player.SendMessage("ChangeTarget", transform);
+                    //}
                 }
             }
         }
@@ -144,7 +148,15 @@ public class PlayerPlanet : MonoBehaviour {
 		    mouseOn = false;
         }
         else {
-		    player.SendMessage ("RemoveTarget");
+            foreach (GameObject i in planets)
+            {
+                if (i.GetComponent<PlayerPlanet>().isTargeted && i.tag == "Player")
+                {
+                    i.SendMessage("RemoveTarget");
+                    //break;
+                }
+            }
+		    //player.SendMessage ("RemoveTarget");
         }
 	}
 

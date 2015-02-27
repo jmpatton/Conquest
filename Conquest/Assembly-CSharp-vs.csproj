@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\CameraOperator.cs" />
      <Compile Include="Assets\Scripts\EndScript.cs" />
      <Compile Include="Assets\Scripts\EnemyPlanetController.cs" />
      <Compile Include="Assets\Scripts\EnemyTarget.cs" />
