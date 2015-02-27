@@ -4,26 +4,34 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
-
+    //Creates a list for all the planets.
     public List<GameObject> planets = new List<GameObject>();
-	public Text gameOverText;
-    public Button restartButton;
-    public Text restartText;
+	//Text to put the game end status in.
+    public Text gameEndText;
+    //Button to either restart the level or go to the next level.
+    public Button levelButton;
+    //Text for the level button.
+    public Text levelText;
+    //used to compare player planets to total planets.
     private int count;
 	// Use this for initialization
 	void Start () {
+        //Next three lines add all the planets to the planets list.
         planets.AddRange(GameObject.FindGameObjectsWithTag("Player"));
         planets.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
         planets.AddRange(GameObject.FindGameObjectsWithTag("Neutral"));
-        gameOverText.text = "";
-        restartButton.enabled = false;
-        restartButton.GetComponent<CanvasRenderer>().SetAlpha(0);
-        restartText.text = "";
+        //Makes the text and buttons invisible and unclickable.
+        gameEndText.text = "";
+        levelButton.enabled = false;
+        levelButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+        levelText.text = "";
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        //Sets count to 0.
         count = 0;
+        //Checks to see how many player planets there are.
         foreach (GameObject i in planets)
         {
             if (i.tag == "Player")
@@ -31,59 +39,38 @@ public class GameController : MonoBehaviour {
                 count++;
             }
         }
+        //If there are no player planets, starts the lose script.
         if (count == 0)
         {
+            //sets gameEndText to the losing script.
             EndGame("You lost...");
-            restartButton.enabled = true;
-            restartButton.GetComponent<CanvasRenderer>().SetAlpha(1);
-            restartText.text = "Restart Level";
+            //Enables and unhides the button.
+            levelButton.enabled = true;
+            levelButton.GetComponent<CanvasRenderer>().SetAlpha(1);
+            levelText.text = "Restart Level";
         }
         if (count == planets.Count)
         {
-            restartButton.enabled = true;
-            restartButton.GetComponent<CanvasRenderer>().SetAlpha(1);
-            restartText.text = "Next Level";
-            restartButton.onClick.RemoveAllListeners();
-            restartButton.onClick.AddListener(() => { NextLevel(); });
+            //Enables and unhides the button, changes the button listener to NextLevel().
+            levelButton.enabled = true;
+            levelButton.GetComponent<CanvasRenderer>().SetAlpha(1);
+            levelText.text = "Next Level";
+            levelButton.onClick.RemoveAllListeners();
+            levelButton.onClick.AddListener(() => { NextLevel(); });
             EndGame("You Win!");
         }
-
-		CalculateAITurn ();
 
 	}
 
 	public void EndGame(string message)
 	{
-		gameOverText.text = message;
+		gameEndText.text = message;
 	}
 
     public void RestartLevel()
     {
         Application.LoadLevel(Application.loadedLevel);
     }
-
-	void CalculateAITurn()
-	{
-		foreach (GameObject i in planets)
-		{
-			if (i.tag == "Enemy")
-			{
-				i.SendMessage ("SendShips",GetAITarget());
-			}
-		}
-	}
-
-	Transform GetAITarget()
-	{
-		foreach (GameObject i in planets)
-		{
-			if (i.tag != "Enemy")
-			{
-				return i.transform;
-			}
-		}
-		return null;
-	}
 
     void NextLevel()
     {

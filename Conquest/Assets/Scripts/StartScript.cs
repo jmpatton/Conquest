@@ -14,6 +14,6 @@ public class StartScript : MonoBehaviour {
 	}
 
 	void StartGame(){
-		Application.LoadLevel ("Main");
+		Application.LoadLevel ("Level1");
 	}
 }
