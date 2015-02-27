@@ -16,27 +16,34 @@ public class PlayerPlanet : MonoBehaviour {
 	//Tells whether the mouse is over the planet or not.  Used to change the isTargeted variable.
 	private bool mouseOn = true;
 	//used to highlight planet
-	public GameObject hightlight;
+	public GameObject highlight;
 	//used to display shipcount
 	private GUIText shipCountText;
 	public int productionRate;//determines the how many ships produced per second
 	public int shipCapacity;//ship production halts if this limit is reached.
+    public GameObject color;
 
 	void Start () {
 		shipCountText = GetComponentInChildren<GUIText> ();//finds the GUIText for the label
+        highlight.SetActive(true);
+        color.SendMessage("SetColor", tag);
 	}
 
 	void Update () {
+      
 		//update text on shipcount label
 		shipCountText.text = ((int)ships).ToString ();
 		ProduceShips ();
 		//Checks to see if the planet is targeted.
 		if (isTargeted) {
 			//display the highlight circle around planet
-            hightlight.SetActive(true);
+            //highlight.SetActive(true);
+            color.SendMessage("SetColor", "Highlight");
+
 		}
 		else {
-			hightlight.SetActive(false);
+			//highlight.SetActive(false);
+            color.SendMessage("SetColor", tag);
 		}
 		/* Checks whether the planet should send ships or not, based on A. if the mouse is clicked,
 		 * B. if the planet has a target (AKA an enemy planet), 
