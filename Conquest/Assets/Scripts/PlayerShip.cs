@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerShip : MonoBehaviour {
 	public Transform target;
 	private NavMeshAgent navComponent;
+	public string owner = "";
 	// Use this for initialization
 	void Start () {
 		//Assigns the NavMeshAgent of the ship to navComponent.
@@ -20,5 +21,29 @@ public class PlayerShip : MonoBehaviour {
 	/*changeTarget is a method other objects can call to change the target variable for this object. */
 	void changeTarget (Transform tar){
 		target = tar;
+	}
+
+	//
+	void OnTriggerEnter (Collider other){
+
+		// Ignore ship collisions
+		if (other.tag == "Ship"){
+			return;
+		}
+
+		//if its a the target planet
+		if (other.tag == "Neutral" || other.tag == "Enemy" || other.tag=="Player" && other.transform == target)
+		{
+			//if its your own planet, add a ship
+			if (other.gameObject.tag == owner)
+			{
+				other.SendMessage("IncrementShips");				
+			}
+			else //tell the planet to decrement its ships
+			{
+				other.SendMessage ("DecrementShips", owner);
+			}
+			Destroy (this);
+		}
 	}
 }

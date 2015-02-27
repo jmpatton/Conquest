@@ -98,6 +98,22 @@ public class PlayerPlanet : MonoBehaviour {
 		}
 	}
 
+	public void IncrementShips()
+	{
+		++ships;
+	}
+
+	public void DecrementShips(string shipOwner)
+	{
+		if (ships > 1) {
+			--ships;
+		}
+		else
+		{
+			this.gameObject.tag = planetOwner;
+		}
+	}
+
 	private void ProduceShips ()
 	{
 		if (ships < shipCapacity) {
