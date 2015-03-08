@@ -83,17 +83,71 @@ public class GameController : MonoBehaviour {
 
     void CalculateAITurn()
     {
-        foreach (GameObject i in planets)
+		float AIships = 0;
+		float playerShips = 0;
+
+		//calculate total number of AI ships
+		//calcuate total number of player ships
+		foreach (GameObject i in planets)
         {
             if (i.tag == "Enemy")
             {
-				if (i.GetComponent<PlayerPlanet>().ships > 10)
-				{
-					i.SendMessage("SendShips", GetAITarget(i));
-				}
+				AIships += i.GetComponent<PlayerPlanet>().ships;
+
+				//if (i.GetComponent<PlayerPlanet>().ships > 10)
+				//{
+					//i.SendMessage("SendShips", GetAITarget(i));
+				//}
             }
+			else if (i.tag == "Player")
+			{
+				playerShips += i.GetComponent<PlayerPlanet>().ships;
+			}
         }
+
+		//tell each AI to pick a target
+		CalculateAITarget (AIships, playerShips);
     }
+
+	void CalculateAITarget(float AIships, float playerShips)
+	{
+		float weakestPlanetShipCount = 500000;
+		GameObject tempObject = new GameObject ();
+		Transform newTarget = tempObject.transform;
+		Destroy (tempObject);
+
+		foreach (GameObject i in planets)
+		{
+			if (i.tag != "Enemy")
+			{
+				if (weakestPlanetShipCount > i.GetComponent<PlayerPlanet>().ships)
+				{
+					weakestPlanetShipCount = i.GetComponent<PlayerPlanet>().ships;
+					newTarget = GetTransform (i);
+				}
+			}
+		}
+		if (weakestPlanetShipCount < AIships)
+		{
+			AIAttackPlanet(newTarget);
+		}
+	}
+
+	void AIAttackPlanet(Transform targetPlanet)
+	{
+		foreach(GameObject i in planets)
+		{
+			if (i.tag == "Enemy")
+			{
+				i.SendMessage("SendShips", targetPlanet);
+			}
+		}
+	}
+
+	Transform GetTransform(GameObject planet)
+	{
+		return planet.transform;
+	}
 
     Transform GetAITarget(GameObject currentPlanet)
     {
@@ -104,6 +158,7 @@ public class GameController : MonoBehaviour {
 		float distance = 10000;
         foreach (GameObject i in planets)
         {
+			//find the closest non-AI planet
 			if (i.tag != "Enemy" && Vector3.Distance (i.transform.position, currentLocation.position) < distance)
             {
 				distance = Vector3.Distance (i.transform.position, currentLocation.position);
