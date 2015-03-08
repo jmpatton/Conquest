@@ -61,7 +61,9 @@ public class GameController : MonoBehaviour {
             levelButton.onClick.AddListener(() => { NextLevel(); });
             EndGame("You Win!");
         }
-   		CalculateAITurn ();
+		else {//if the AI hasn't won yet
+			CalculateAITurn();
+		}
 	}
 
 	public void EndGame(string message)
@@ -96,7 +98,9 @@ public class GameController : MonoBehaviour {
     Transform GetAITarget(GameObject currentPlanet)
     {
 		Transform currentLocation = currentPlanet.transform;
-		Transform newTarget = new GameObject().transform;
+		GameObject tempObject = new GameObject ();
+		Transform newTarget = tempObject.transform;
+		Destroy (tempObject);
 		float distance = 10000;
         foreach (GameObject i in planets)
         {
