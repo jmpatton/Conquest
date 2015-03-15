@@ -83,31 +83,28 @@ public class GameController : MonoBehaviour {
 
     void CalculateAITurn()
     {
-		float AIships = 0;
-		float playerShips = 0;
-
-		//calculate total number of AI ships
-		//calcuate total number of player ships
-		foreach (GameObject i in planets)
-        {
-            if (i.tag == "Enemy")
-            {
-				AIships += i.GetComponent<PlayerPlanet>().ships;
-
-				//if (i.GetComponent<PlayerPlanet>().ships > 10)
-				//{
-					//i.SendMessage("SendShips", GetAITarget(i));
-				//}
-            }
-			else if (i.tag == "Player")
-			{
-				playerShips += i.GetComponent<PlayerPlanet>().ships;
-			}
-        }
-
+		float AIships = GetShipCount ("Enemy");
+		float playerShips = GetShipCount ("Player");
+	
 		//tell each AI to pick a target
 		CalculateAITarget (AIships, playerShips);
     }
+
+	//iterates though all planets and returns the number of ships the player has
+	float GetShipCount(string playerName)
+	{
+		float count = 0;
+		foreach (GameObject i in planets) 
+		{
+			if (i.tag == playerName)
+			{
+				count += i.GetComponent<PlayerPlanet>().ships;
+			}
+		}
+
+		return count;
+	}
+
 
 	void CalculateAITarget(float AIships, float playerShips)
 	{
