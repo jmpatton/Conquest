@@ -29,6 +29,10 @@ public class PlayerPlanet : MonoBehaviour {
 	public int productionRate;//determines the how many ships produced per second
 	public int shipCapacity;//ship production halts if this limit is reached.
     public GameObject color;
+	public AudioClip playerSelectAudio;// Player planet select sound
+	public AudioClip enemyNeutralSelectAudio;// The select audio for enemy or neutral planets
+
+	private AudioSource source;
 
 	void Start () {
 		shipCountText = GetComponentInChildren<GUIText> ();//finds the GUIText for the label
@@ -41,6 +45,11 @@ public class PlayerPlanet : MonoBehaviour {
         planets.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
         planets.AddRange(GameObject.FindGameObjectsWithTag("Neutral"));
 	}
+
+	void Awake () {
+		source = GetComponent<AudioSource> ();
+	}
+	
 
 	void Update () {
       
@@ -114,6 +123,7 @@ public class PlayerPlanet : MonoBehaviour {
             {
                 isTargeted = true;
                 mouseOn = true;
+				source.PlayOneShot (playerSelectAudio, 1F);
             }
         }
         else
@@ -128,6 +138,7 @@ public class PlayerPlanet : MonoBehaviour {
                     {
                         if (i.GetComponent<PlayerPlanet>().isTargeted && i.tag == "Player")
                         {
+							source.PlayOneShot (enemyNeutralSelectAudio, 1F);
                             i.SendMessage("ChangeTarget", transform);
                             //break;
                         }

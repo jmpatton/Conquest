@@ -15,6 +15,10 @@ public class GameController : MonoBehaviour {
     //used to compare player planets to total planets.
     private int count;
 	// Use this for initialization
+	public AudioClip gameOverAudio;
+
+	private AudioSource source;
+
 	void Start () {
         //Next three lines add all the planets to the planets list.
         planets.AddRange(GameObject.FindGameObjectsWithTag("Player"));
@@ -25,6 +29,11 @@ public class GameController : MonoBehaviour {
         levelButton.enabled = false;
         levelButton.GetComponent<CanvasRenderer>().SetAlpha(0);
         levelText.text = "";
+	}
+
+	void Awake () {
+
+		source = GetComponent <AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -44,6 +53,7 @@ public class GameController : MonoBehaviour {
         {
             //sets gameEndText to the losing script.
             EndGame("You lost...");
+			source.PlayOneShot(gameOverAudio, 1F);
             //Enables and unhides the button.
             levelButton.enabled = true;
             levelButton.GetComponent<CanvasRenderer>().SetAlpha(1);
