@@ -16,4 +16,8 @@ public class StartScript : MonoBehaviour {
 	void StartGame(){
 		Application.LoadLevel ("Level1");
 	}
+
+	void Instructions(){
+		Application.LoadLevel ("Instructions");
+	}
 }

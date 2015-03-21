@@ -38,39 +38,37 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //Sets count to 0.
-        count = 0;
-        //Checks to see how many player planets there are.
-        foreach (GameObject i in planets)
-        {
-            if (i.tag == "Player")
-            {
-                count++;
-            }
-        }
-        //If there are no player planets, starts the lose script.
-        if (count == 0)
-        {
-            //sets gameEndText to the losing script.
-            EndGame("You lost...");
-			source.PlayOneShot(gameOverAudio, 1F);
-            //Enables and unhides the button.
-            levelButton.enabled = true;
-            levelButton.GetComponent<CanvasRenderer>().SetAlpha(1);
-            levelText.text = "Restart Level";
-            levelButton.onClick.RemoveAllListeners();
-            levelButton.onClick.AddListener(() => { RestartLevel(); });
-        }
-        if (count == planets.Count)
-        {
-            //Enables and unhides the button, changes the button listener to NextLevel().
-            levelButton.enabled = true;
-            levelButton.GetComponent<CanvasRenderer>().SetAlpha(1);
-            levelText.text = "Next Level";
-            levelButton.onClick.RemoveAllListeners();
-            levelButton.onClick.AddListener(() => { NextLevel(); });
-            EndGame("You Win!");
-        }
+		//Checks to see if there are any player planets. If not, checks for player ships.
+		if (!GameObject.FindWithTag("Player"))
+		{
+			//Checks to see if the player has any ships out.  If not, starts the game over code.
+			if (!GameObject.FindWithTag("PlayerShip"))
+			{
+				//sets gameEndText to the losing script.
+				EndGame("You lost...");
+				//Enables and unhides the button.
+				levelButton.enabled = true;
+				levelButton.GetComponent<CanvasRenderer>().SetAlpha(1);
+				levelText.text = "Restart Level";
+				levelButton.onClick.RemoveAllListeners();
+				levelButton.onClick.AddListener(() => { RestartLevel(); });
+			}
+		}
+		//Checks to see if there are any enemy planets.  If not, checks for enemy ships.
+		else if (!GameObject.FindWithTag("Enemy"))
+		{
+			//Checks to see if the enemy has ships out. If not, starts the win code.
+			if (!GameObject.FindWithTag("EnemyShip"))
+			{
+				//Enables and unhides the button, changes the button listener to NextLevel().
+				levelButton.enabled = true;
+				levelButton.GetComponent<CanvasRenderer>().SetAlpha(1);
+				levelText.text = "Next Level";
+				levelButton.onClick.RemoveAllListeners();
+				levelButton.onClick.AddListener(() => { NextLevel(); });
+				EndGame("You Win!");
+			}
+		}
 		else {//if the AI hasn't won yet
 			CalculateAITurn();
 		}
