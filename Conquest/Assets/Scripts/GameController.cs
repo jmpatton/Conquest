@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour {
     private int count;
 	// Use this for initialization
 	public AudioClip gameOverAudio;
+	private float AITimer = 1.5f;//determines how often the AI will make a turn
+	private float timer = 0f;//
 
 	private AudioSource source;
 
@@ -91,11 +93,16 @@ public class GameController : MonoBehaviour {
 
     void CalculateAITurn()
     {
-		float AIships = GetShipCount ("Enemy");
-		float playerShips = GetShipCount ("Player");
-	
-		//tell each AI to pick a target
-		CalculateAITarget (AIships, playerShips);
+		timer += Time.deltaTime;
+		if (timer >= AITimer)
+		{
+			timer = 0f;//reset the timer
+			float AIships = GetShipCount ("Enemy");
+			float playerShips = GetShipCount ("Player");
+			
+			//tell each AI to pick a target
+			CalculateAITarget (AIships, playerShips);
+		}
     }
 
 	//iterates though all planets and returns the number of ships the player has
