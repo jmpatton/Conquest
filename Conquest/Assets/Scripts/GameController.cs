@@ -16,8 +16,10 @@ public class GameController : MonoBehaviour {
     private int count;
 	// Use this for initialization
 	public AudioClip gameOverAudio;
-	private const float AITimer = 1.5f;//determines how often the AI will make a turn
-	private float timer = 0f;//
+	private const float AITimer = 1f;//determines how often the AI will make a turn
+	private Transform LastAITarget;//keeps the AI from sending to the same planet twice in a row
+	private float timer = 0f;
+	private bool AIRetarget = false;
 
 	private AudioSource source;
 
@@ -133,14 +135,37 @@ public class GameController : MonoBehaviour {
 			{
 				if (weakestPlanetShipCount > i.GetComponent<PlayerPlanet>().ships)
 				{
-					weakestPlanetShipCount = i.GetComponent<PlayerPlanet>().ships;
-					newTarget = GetTransform (i);
+					if(AllowedToRetarget(GetTransform(i)))
+					{
+						weakestPlanetShipCount = i.GetComponent<PlayerPlanet>().ships;
+						newTarget = GetTransform (i);
+						LastAITarget = newTarget;
+					}
 				}
 			}
 		}
 		if (weakestPlanetShipCount < AIships)
 		{
 			AIAttackPlanet(newTarget, AIships, weakestPlanetShipCount);
+		}
+	}
+
+	bool AllowedToRetarget(Transform newTarget)
+	{
+		//if its the old target and we haven't tried sending there again already
+		if (newTarget == LastAITarget && AIRetarget == false) 
+		{
+			AIRetarget = true;
+			return false;//don't send ships
+		}
+		else if (newTarget == LastAITarget && AIRetarget == true)
+		{
+			AIRetarget = false;
+			return true;//let them send this time
+		}
+		else 
+		{
+			return true;//it wasn't the last target so let them send
 		}
 	}
 
