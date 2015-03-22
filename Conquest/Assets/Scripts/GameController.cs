@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour {
     private int count;
 	// Use this for initialization
 	public AudioClip gameOverAudio;
-	private float AITimer = 1.5f;//determines how often the AI will make a turn
+	private const float AITimer = 1.5f;//determines how often the AI will make a turn
 	private float timer = 0f;//
 
 	private AudioSource source;
@@ -116,7 +116,6 @@ public class GameController : MonoBehaviour {
 				count += i.GetComponent<PlayerPlanet>().ships;
 			}
 		}
-
 		return count;
 	}
 
@@ -141,17 +140,27 @@ public class GameController : MonoBehaviour {
 		}
 		if (weakestPlanetShipCount < AIships)
 		{
-			AIAttackPlanet(newTarget);
+			AIAttackPlanet(newTarget, AIships, weakestPlanetShipCount);
 		}
 	}
 
-	void AIAttackPlanet(Transform targetPlanet)
+	void AIAttackPlanet(Transform targetPlanet, float AIships, float targetShipCount)
 	{
+		float shipsSent = 0f;
+		float extraShips = 5;
 		foreach(GameObject i in planets)
 		{
-			if (i.tag == "Enemy")
+			if (shipsSent < targetShipCount + extraShips)//check to see if its sent enough ships already
 			{
-				i.SendMessage("SendShips", targetPlanet);
+				if (i.tag == "Enemy")
+				{
+					shipsSent += i.GetComponent<PlayerPlanet>().ships;
+					i.SendMessage("SendShips", targetPlanet);
+				}
+			}
+			else
+			{
+				break;
 			}
 		}
 	}
