@@ -16,9 +16,11 @@ public class GameController : MonoBehaviour {
     private int count;
 	// Use this for initialization
 	public AudioClip gameOverAudio;
-	private const float AITimer = 1f;//determines how often the AI will make a turn
+	private const float AITIMER = 1.8f;//determines how often the AI will make a turn
+	private const float AIRESENDTIMER = 4.0f;//determines how long the AI waits before resending to a planet
 	private Transform LastAITarget;//keeps the AI from sending to the same planet twice in a row
 	private float timer = 0f;
+	private float resendTimer = 0f;
 	private bool AIRetarget = false;
 
 	private AudioSource source;
@@ -96,7 +98,7 @@ public class GameController : MonoBehaviour {
     void CalculateAITurn()
     {
 		timer += Time.deltaTime;
-		if (timer >= AITimer)
+		if (timer >= AITIMER)
 		{
 			timer = 0f;//reset the timer
 			float AIships = GetShipCount ("Enemy");
@@ -152,16 +154,16 @@ public class GameController : MonoBehaviour {
 
 	bool AllowedToRetarget(Transform newTarget)
 	{
-		//if its the old target and we haven't tried sending there again already
-		if (newTarget == LastAITarget && AIRetarget == false) 
+		//if its the old target
+		if (newTarget == LastAITarget && resendTimer <= AIRESENDTIMER) 
 		{
-			AIRetarget = true;
-			return false;//don't send ships
+			resendTimer += AITIMER;
+			return false;//don't send ships, it hasn't been long enough
 		}
-		else if (newTarget == LastAITarget && AIRetarget == true)
+		else if (newTarget == LastAITarget && resendTimer > AIRESENDTIMER)
 		{
-			AIRetarget = false;
-			return true;//let them send this time
+			resendTimer = 0f;
+			return true;//let them send this time, its been long enough
 		}
 		else 
 		{
