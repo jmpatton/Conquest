@@ -97,7 +97,9 @@ public class GameController : MonoBehaviour {
 
     void CalculateAITurn()
     {
-		timer += Time.deltaTime;
+		float timeChange = Time.deltaTime;
+		timer += timeChange;
+		resendTimer += timeChange;
 		if (timer >= AITIMER)
 		{
 			timer = 0f;//reset the timer
@@ -157,7 +159,6 @@ public class GameController : MonoBehaviour {
 		//if its the old target
 		if (newTarget == LastAITarget && resendTimer <= AIRESENDTIMER) 
 		{
-			resendTimer += AITIMER;
 			return false;//don't send ships, it hasn't been long enough
 		}
 		else if (newTarget == LastAITarget && resendTimer > AIRESENDTIMER)
