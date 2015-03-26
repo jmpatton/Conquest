@@ -252,7 +252,7 @@ public class PlayerPlanet : MonoBehaviour {
 
 	private void ProduceShips ()
 	{
-		if (ships < shipCapacity) {
+		if (ships < shipCapacity && gameObject.tag != "Neutral") {
 			ships += Time.deltaTime * (float)productionRate;
 		}
 	}
