@@ -16,8 +16,8 @@ public class GameController : MonoBehaviour {
     private int count;
 	// Use this for initialization
 	public AudioClip gameOverAudio;
-	private const float AITIMER = 1.8f;//determines how often the AI will make a turn
-	private const float AIRESENDTIMER = 4.0f;//determines how long the AI waits before resending to a planet
+	private const float AITIMER = 3.0f;//determines how often the AI will make a turn
+	private const float AIRESENDTIMER = 6.0f;//determines how long the AI waits before resending to a planet
 	private Transform LastAITarget;//keeps the AI from sending to the same planet twice in a row
 	private float timer = 0f;
 	private float resendTimer = 0f;
