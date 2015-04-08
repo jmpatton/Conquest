@@ -4,35 +4,29 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class PlayerPlanet : MonoBehaviour {
-    //Creates a list for all the planets.
-    public List<GameObject> planets = new List<GameObject>();
-    //Sets a target for enemy
-    public GameObject player;
-	//Gives target information that it can then send to the ships.
-	private Transform target;
-	//The number of ships currently in possession.
-	public float ships;
+    //Public Variables
+    public List<GameObject> planets = new List<GameObject>();//Creates a list for all the planets.
+    public GameObject player;//Sets a target for enemy
+    public float ships;//The number of ships currently in possession.
     public float initialShips;
-	//Allows you to set a ship object.
-	public GameObject ship;
-    public GameObject enemyShip;
-	//Sets the location to spawn the ships.
-	public Transform shipSpawn;
-	//Tells the planet whether it is targeted, or selected, or not.
-	public bool isTargeted = false;
-	//Tells whether the mouse is over the planet or not.  Used to change the isTargeted variable.
-	private bool mouseOn = true;
-	//used to highlight planet
-	public GameObject highlight;
-	//used to display shipcount
-	private GUIText shipCountText;
-	public int productionRate;//determines the how many ships produced per second
-	public int shipCapacity;//ship production halts if this limit is reached.
+    public GameObject ship;//Allows you to set a ship object.
+    public GameObject enemyShip;//Enemy ship object.
+    public Transform shipSpawn;//Sets the location to spawn the ships.
+    public bool isTargeted = false;//Tells the planet whether it is targeted, or selected, or not.
+    public int productionRate;//determines the how many ships produced per second
+    public int shipCapacity;//ship production halts if this limit is reached.
     public GameObject color;
-	public AudioClip playerSelectAudio;// Player planet select sound
-	public AudioClip enemyNeutralSelectAudio;// The select audio for enemy or neutral planets
+    public AudioClip playerSelectAudio;// Player planet select sound
+    public AudioClip enemyNeutralSelectAudio;// The select audio for enemy or neutral planets
+    public GameObject highlight;//used to highlight planet
+    //Private Variables
+    private Transform target;//Gives target information that it can then send to the ships. 
+    private GUIText shipCountText;//used to display shipcount
+    private bool mouseOn = false;//Tells whether the mouse is over the planet or not.  Used to change the isTargeted variable.
+    private AudioSource source;
+    private int amount = 4;
 
-	private AudioSource source;
+	
 
 	void Start () {
 		shipCountText = GetComponentInChildren<GUIText> ();//finds the GUIText for the label
@@ -59,28 +53,18 @@ public class PlayerPlanet : MonoBehaviour {
 		//Checks to see if the planet is targeted.
         if (gameObject.tag == "Player")
         {
-            if (isTargeted)
-            {
-                //display the highlight circle around planet
-                //highlight.SetActive(true);
-                color.SendMessage("SetColor", "Highlight");
 
-            }
-            else
-            {
-                //highlight.SetActive(false);
-                color.SendMessage("SetColor", gameObject.tag);
-            }
-
-            /* Checks whether the planet should send ships or not, based on A. if the mouse is clicked,
+            /* Checks whether the planet should send ships or not, based on
+             * A. if the mouse is clicked,
              * B. if the planet has a target (AKA an enemy planet), 
              * C. if the ship itself is "targeted" by the player, or selected, and
              * D. if it has any ships to send. */
-            if (Input.GetButton("Fire1") && target && isTargeted && ships > 1)
+            if (Input.GetMouseButtonDown(0) && target && isTargeted && ships > 1)
             {
 
-                //int send = ships * ;
-                while (ships > 1)
+                double send = ships - (ships * (.25 * amount));
+                Debug.Log(send);
+                while (ships > send)
                 {
                     // This very long line essentially spawns a ship and tells it where to go.
                     if (gameObject.tag == "Player")
@@ -89,18 +73,19 @@ public class PlayerPlanet : MonoBehaviour {
                         ships--;
                     }
                 }
+                RemoveTarget();
             }
             else
             {
                 /* Checks whether to "deselect" or untarget the planet.  
                  * It does this is you click off of the planet and not
-                 * on an enemy planet. */
-                if (Input.GetButton("Fire1") && !target && !mouseOn)
+                 * on an enemy planet or a player planet while holding down shift. */
+                if (Input.GetMouseButtonDown(0) && !target && !mouseOn)
                 {
                     if (!Input.GetButton("Fire3"))
                     {
-
                         isTargeted = false;
+                        color.SendMessage("SetColor", gameObject.tag);
                     }
                 }
             }
@@ -119,11 +104,10 @@ public class PlayerPlanet : MonoBehaviour {
 		//Determines whether to set it as the targeted(selected) planet.
         if (gameObject.tag == "Player")
         {
-            if (Input.GetButton("Fire1"))
+            if (Input.GetMouseButtonDown(0))
             {
-                isTargeted = true;
                 mouseOn = true;
-				source.PlayOneShot (playerSelectAudio, 1F);
+                Target();
             }
         }
         else
@@ -132,7 +116,7 @@ public class PlayerPlanet : MonoBehaviour {
             {
                 /*Checks to see if the player is clicking on the planet. If they are, 
 		 * sends the transform information to the player. */
-                if (Input.GetButton("Fire1"))
+                if (Input.GetMouseButtonDown(0))
                 {
                     foreach (GameObject i in planets)
                     {
@@ -140,22 +124,23 @@ public class PlayerPlanet : MonoBehaviour {
                         {
 							source.PlayOneShot (enemyNeutralSelectAudio, 1F);
                             i.SendMessage("ChangeTarget", transform);
-                            //break;
                         }
                     }
-                    //if (player)
-                    //{
-                    //    player.SendMessage("ChangeTarget", transform);
-                    //}
                 }
             }
         }
 	}
+
+    public void Target()
+    {
+        isTargeted = true;
+        source.PlayOneShot(playerSelectAudio, 1F);
+        color.SendMessage("SetColor", "Highlight");
+    }
 	//Changes the mouseOn variable once the mouse leaves the area.  Needed to remove it as the target or selection.
 	void OnMouseExit (){
         if (tag == "Player")
         {
-            
 		    mouseOn = false;
         }
         else {
@@ -164,10 +149,8 @@ public class PlayerPlanet : MonoBehaviour {
                 if (i.GetComponent<PlayerPlanet>().isTargeted && i.tag == "Player")
                 {
                     i.SendMessage("RemoveTarget");
-                    //break;
                 }
             }
-		    //player.SendMessage ("RemoveTarget");
         }
 	}
 
@@ -191,8 +174,8 @@ public class PlayerPlanet : MonoBehaviour {
                     if (ships < 1)
                     {
                         gameObject.tag = "Player";
-                        color.SendMessage("SetColor", tag);
-                        productionRate = 3;
+                       // productionRate = 3;
+                        color.SendMessage("SetColor", gameObject.tag);
                     }
                 }
             }
@@ -216,7 +199,7 @@ public class PlayerPlanet : MonoBehaviour {
                         {
                             gameObject.tag = "Enemy";
                             color.SendMessage("SetColor", gameObject.tag);
-                            productionRate = 2;
+                           // productionRate = 2;
                         }
                     }
                 }
@@ -256,4 +239,9 @@ public class PlayerPlanet : MonoBehaviour {
 			ships += Time.deltaTime * (float)productionRate;
 		}
 	}
+
+    public void SendAmount(int send)
+    {
+        amount = send;
+    }
 }

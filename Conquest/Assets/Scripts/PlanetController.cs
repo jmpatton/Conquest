@@ -3,14 +3,15 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class PlanetController : MonoBehaviour {
-
+    //Public Variables
 	public float productionRate;
 	public float ships;
-	private GUIText text;
 	public string owner;
 	public GameObject ship;
 	public Transform shipSpawn;
 	public GameController gameController;
+    //Private Variables
+    private GUIText text;
 	// Use this for initialization
 	void Start () {
 		text = GetComponentInChildren<GUIText>();

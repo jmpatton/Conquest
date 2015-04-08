@@ -4,26 +4,21 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
-    //Creates a list for all the planets.
-    public List<GameObject> planets = new List<GameObject>();
-	//Text to put the game end status in.
-    public Text gameEndText;
-    //Button to either restart the level or go to the next level.
-    public Button levelButton;
-    //Text for the level button.
-    public Text levelText;
-    //used to compare player planets to total planets.
-    private int count;
-	// Use this for initialization
-	public AudioClip gameOverAudio;
+    //Public Variables
+    public List<GameObject> planets = new List<GameObject>();//Creates a list for all the planets.
+    public AudioClip gameOverAudio;//Audio clip for gamve over audio.
+    //Private Variables
+    private int count;//used to compare player planets to total planets.
 	private const float AITIMER = 3.0f;//determines how often the AI will make a turn
 	private const float AIRESENDTIMER = 6.0f;//determines how long the AI waits before resending to a planet
 	private Transform LastAITarget;//keeps the AI from sending to the same planet twice in a row
 	private float timer = 0f;
-	private float resendTimer = 0f;
-	private bool AIRetarget = false;
-
-	private AudioSource source;
+    private float resendTimer = 0f;
+    private Button levelButton;//Button to either restart the level or go to the next level.
+    private Text levelText;//Text for the level button.
+    private Text gameEndText;//Text to put the game end status in.
+	//private bool AIRetarget = false;
+	//private AudioSource source;
 
 	void Start () {
         //Next three lines add all the planets to the planets list.
@@ -31,15 +26,12 @@ public class GameController : MonoBehaviour {
         planets.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
         planets.AddRange(GameObject.FindGameObjectsWithTag("Neutral"));
         //Makes the text and buttons invisible and unclickable.
-        gameEndText.text = "";
-        levelButton.enabled = false;
-        levelButton.GetComponent<CanvasRenderer>().SetAlpha(0);
-        levelText.text = "";
+
 	}
 
 	void Awake () {
-
-		source = GetComponent <AudioSource> ();
+		//source = 
+        GetComponent <AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -216,5 +208,42 @@ public class GameController : MonoBehaviour {
         }
         return newTarget;
     }
+    public void SelectAll()
+    {
+        foreach (GameObject i in planets)
+        {
+            if (i.tag == "Player")
+            {
+                i.SendMessage("Target");
+            }
+        }
+    }
 
+    public void SendAmount(int send)
+    {
+        foreach (GameObject i in planets)
+        {
+            if (i.tag == "Player")
+            {
+                i.SendMessage("SendAmount", send);
+            }
+        }
+    }
+
+    public void SetGameButton(Button but)
+    {
+        levelButton = but;
+        levelButton.enabled = false;
+        levelButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+    }
+    public void SetGameButtonText(Text tex)
+    {
+        levelText = tex;
+        levelText.text = "";
+    }
+    public void SetEndText(Text tex)
+    {
+        gameEndText = tex;
+        gameEndText.text = "";
+    }
 }
