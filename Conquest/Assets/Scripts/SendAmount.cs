@@ -11,7 +11,7 @@ public class SendAmount : MonoBehaviour {
 	void Start () {
         GameController = GameObject.FindGameObjectWithTag("GameController");
         transform.position = new Vector3(130,20);
-        amount.text = (25 * send).ToString();
+        amount.text = (25 * send).ToString() + "%";
 	}
 
     public void sendAmount()
@@ -24,7 +24,7 @@ public class SendAmount : MonoBehaviour {
         {
             send = 4;
         }
-        amount.text = (25 * send).ToString();
+        amount.text = (25 * send).ToString() + "%";
         GameController.SendMessage("SendAmount", send);
     }
 }
