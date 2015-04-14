@@ -25,7 +25,7 @@ public class PlayerPlanet : MonoBehaviour {
     private bool mouseOn = false;//Tells whether the mouse is over the planet or not.  Used to change the isTargeted variable.
     private AudioSource source;
     private int amount = 4;
-
+	private float PRODUCTION_MODIFIER = 0.5f;
 	
 
 	void Start () {
@@ -236,7 +236,7 @@ public class PlayerPlanet : MonoBehaviour {
 	private void ProduceShips ()
 	{
 		if (ships < shipCapacity && gameObject.tag != "Neutral") {
-			ships += Time.deltaTime * (float)productionRate;
+			ships += Time.deltaTime * (float)productionRate * PRODUCTION_MODIFIER;
 		}
 	}
 
