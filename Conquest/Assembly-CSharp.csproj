@@ -46,20 +46,24 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\LevelButton.cs" />
      <Compile Include="Assets\Scripts\CameraOperator.cs" />
+     <Compile Include="Assets\Scripts\Difficulty.cs" />
      <Compile Include="Assets\Scripts\EndScript.cs" />
      <Compile Include="Assets\Scripts\EnemyPlanetController.cs" />
      <Compile Include="Assets\Scripts\EnemyTarget.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
      <Compile Include="Assets\Scripts\HighlightColor.cs" />
      <Compile Include="Assets\Scripts\InstructionsScript.cs" />
+     <Compile Include="Assets\Scripts\LevelButton.cs" />
+     <Compile Include="Assets\Scripts\MenuButton.cs" />
      <Compile Include="Assets\Scripts\Mover.cs" />
      <Compile Include="Assets\Scripts\ObjectLabel.cs" />
      <Compile Include="Assets\Scripts\Old Scripts\PlanetManagement.cs" />
      <Compile Include="Assets\Scripts\PlanetController.cs" />
      <Compile Include="Assets\Scripts\PlayerPlanet.cs" />
      <Compile Include="Assets\Scripts\PlayerShip.cs" />
+     <Compile Include="Assets\Scripts\Resume.cs" />
+     <Compile Include="Assets\Scripts\ResumeButton.cs" />
      <Compile Include="Assets\Scripts\SelectAll.cs" />
      <Compile Include="Assets\Scripts\SendAmount.cs" />
      <Compile Include="Assets\Scripts\StartScript.cs" />

@@ -14,6 +14,7 @@ public class EndScript : MonoBehaviour {
 	}
 
 	void StartGame(){
+        PlayerPrefs.SetInt("Current",0);
 		Application.LoadLevel ("Start");
 	}
 }

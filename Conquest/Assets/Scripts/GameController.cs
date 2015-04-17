@@ -17,6 +17,16 @@ public class GameController : MonoBehaviour {
     private Button levelButton;//Button to either restart the level or go to the next level.
     private Text levelText;//Text for the level button.
     private Text gameEndText;//Text to put the game end status in.
+    private Button menuButton;
+    private Text menuText;
+    private Button resumeButton;
+    private Text resumeText;
+    private int difficulty;
+    private Button diffButton;
+    private Text diffText;
+    private const int EASY = 1;
+    private const int MEDIUM = 2;
+    private const int HARD = 3;
 	//private bool AIRetarget = false;
 	//private AudioSource source;
 
@@ -27,6 +37,7 @@ public class GameController : MonoBehaviour {
         planets.AddRange(GameObject.FindGameObjectsWithTag("Neutral"));
         //Makes the text and buttons invisible and unclickable.
 
+
 	}
 
 	void Awake () {
@@ -36,6 +47,10 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (Input.GetButtonDown("Pause"))
+        {
+            Pause();
+        }
 		//Checks to see if there are any player planets. If not, checks for player ships.
 		if (!GameObject.FindWithTag("Player"))
 		{
@@ -79,6 +94,7 @@ public class GameController : MonoBehaviour {
 
     public void RestartLevel()
     {
+        Time.timeScale = 1.0f;
         Application.LoadLevel(Application.loadedLevel);
     }
 
@@ -238,9 +254,114 @@ public class GameController : MonoBehaviour {
         levelText = tex;
         levelText.text = "";
     }
+    public void SetMenuButton(Button but)
+    {
+        menuButton = but;
+        menuButton.enabled = false;
+        menuButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+    }
+    public void SetMenuButtonText(Text tex)
+    {
+        menuText = tex;
+        menuText.text = "";
+    }
+    public void SetResumeButton(Button but)
+    {
+        resumeButton = but;
+        resumeButton.enabled = false;
+        resumeButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+        resumeButton.onClick.AddListener(() => { Unpause(); });
+    }
+    public void SetResumeButtonText(Text tex)
+    {
+        resumeText = tex;
+        resumeText.text = "";
+    }
     public void SetEndText(Text tex)
     {
         gameEndText = tex;
         gameEndText.text = "";
+    }
+    void SetDiffText(Text t)
+    {
+        diffText = t;
+        diffText.text = "";
+    }
+    public void SetDiffButton(Button but)
+    {
+        diffButton = but;
+        diffButton.enabled = false;
+        diffButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+    }
+
+    void Pause()
+    {
+        Time.timeScale = 0.0f;
+        diffButton.enabled = true;
+        diffButton.GetComponent<CanvasRenderer>().SetAlpha(1);
+        diffText.text = GetDifficulty();
+        menuButton.enabled = true;
+        menuButton.GetComponent<CanvasRenderer>().SetAlpha(1);
+        menuText.text = "Main Menu";
+        resumeButton.enabled = true;
+        resumeButton.GetComponent<CanvasRenderer>().SetAlpha(1);
+        resumeText.text = "Resume";
+        levelButton.enabled = true;
+        levelButton.GetComponent<CanvasRenderer>().SetAlpha(1);
+        levelText.text = "Restart Level";
+        levelButton.onClick.RemoveAllListeners();
+        levelButton.onClick.AddListener(() => { RestartLevel(); });
+
+    }
+
+    void Unpause()
+    {
+        Time.timeScale = 1.0f;
+        diffButton.enabled = false;
+        diffButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+        diffText.text = "";
+        menuButton.enabled = false;
+        menuButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+        menuText.text = "";
+        resumeButton.enabled = false;
+        resumeButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+        resumeText.text = "";
+        levelButton.enabled = false;
+        levelButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+        levelText.text = "";
+        levelButton.onClick.RemoveAllListeners();
+
+
+    }
+
+    string GetDifficulty()
+    {
+        string diff;
+        switch (difficulty)
+        {
+            case EASY: diff = "Easy"; break;
+            case MEDIUM: diff = "Medium"; break;
+            case HARD: diff = "Hard"; break;
+            default: diff = "Easy"; break;
+        }
+        return diff;
+    }
+    void Difficulty()
+    {
+        if (difficulty < HARD)
+        {
+            difficulty++;
+        }
+        else
+        {
+            difficulty = EASY;
+        }
+        switch (difficulty)
+        {
+            case EASY: diffText.text = "Easy"; break;
+            case MEDIUM: diffText.text = "Medium"; break;
+            case HARD: diffText.text = "Hard"; break;
+        }
+        PlayerPrefs.SetInt("Difficulty", difficulty);
     }
 }

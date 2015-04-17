@@ -69,7 +69,6 @@ public class PlayerPlanet : MonoBehaviour {
             {
 
                 double send = ships - (ships * (SHIP_SEND_AMOUNT * amount));
-                Debug.Log(send);
                 while (ships > send)
                 {
                     // This very long line essentially spawns a ship and tells it where to go.
