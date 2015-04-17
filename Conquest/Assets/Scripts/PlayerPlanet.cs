@@ -176,7 +176,6 @@ public class PlayerPlanet : MonoBehaviour {
                 if (gameObject.tag == "Enemy" || gameObject.tag == "Neutral")
                 {
                     Destroy(other.gameObject);
-                    Debug.Log(1 / shipSpawn.localScale.x);
                     ships -= (1 / shipSpawn.localScale.x);
                     if (ships < 1)
                     {
@@ -201,7 +200,7 @@ public class PlayerPlanet : MonoBehaviour {
                     if (gameObject.tag == "Player" || gameObject.tag == "Neutral")
                     {
                         Destroy(other.gameObject);
-                        ships--;
+                        ships -= (1 / shipSpawn.localScale.x);
                         if (ships < 1)
                         {
                             gameObject.tag = "Enemy";
