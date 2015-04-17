@@ -223,10 +223,7 @@ public class GameController : MonoBehaviour {
     {
         foreach (GameObject i in planets)
         {
-            if (i.tag == "Player")
-            {
-                i.SendMessage("SendAmount", send);
-            }
+           i.SendMessage("SendAmount", send);
         }
     }
 

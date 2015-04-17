@@ -11,21 +11,24 @@ public class PlayerPlanet : MonoBehaviour {
     public float initialShips;
     public GameObject ship;//Allows you to set a ship object.
     public GameObject enemyShip;//Enemy ship object.
-    public Transform shipSpawn;//Sets the location to spawn the ships.
     public bool isTargeted = false;//Tells the planet whether it is targeted, or selected, or not.
-    public int productionRate;//determines the how many ships produced per second
-    public int shipCapacity;//ship production halts if this limit is reached.
     public GameObject color;
     public AudioClip playerSelectAudio;// Player planet select sound
     public AudioClip enemyNeutralSelectAudio;// The select audio for enemy or neutral planets
     public GameObject highlight;//used to highlight planet
     //Private Variables
+    private int shipCapacity;//ship production halts if this limit is reached.
+    private Transform shipSpawn;//Sets the location to spawn the ships.
+    private float spawnRate;
+    private float productionRate;//determines the how many ships produced per second
     private Transform target;//Gives target information that it can then send to the ships. 
     private GUIText shipCountText;//used to display shipcount
     private bool mouseOn = false;//Tells whether the mouse is over the planet or not.  Used to change the isTargeted variable.
     private AudioSource source;
     private int amount = 4;
 	private float PRODUCTION_MODIFIER = 0.5f;
+    private float SHIP_SEND_AMOUNT = 0.25f;
+    private int SHIP_CAPACITY = 25;
 	
 
 	void Start () {
@@ -33,6 +36,9 @@ public class PlayerPlanet : MonoBehaviour {
         highlight.SetActive(true);
         color.SendMessage("SetColor", tag);
         ships = initialShips;
+        shipSpawn = gameObject.transform;
+        productionRate = 1 / shipSpawn.localScale.x;
+        shipCapacity = (int)(SHIP_CAPACITY * shipSpawn.localScale.x);
 
         //Next three lines add all the planets to the planets list.
         planets.AddRange(GameObject.FindGameObjectsWithTag("Player"));
@@ -62,7 +68,7 @@ public class PlayerPlanet : MonoBehaviour {
             if (Input.GetMouseButtonDown(0) && target && isTargeted && ships > 1)
             {
 
-                double send = ships - (ships * (.25 * amount));
+                double send = ships - (ships * (SHIP_SEND_AMOUNT * amount));
                 Debug.Log(send);
                 while (ships > send)
                 {
@@ -170,7 +176,8 @@ public class PlayerPlanet : MonoBehaviour {
                 if (gameObject.tag == "Enemy" || gameObject.tag == "Neutral")
                 {
                     Destroy(other.gameObject);
-                    ships--;
+                    Debug.Log(1 / shipSpawn.localScale.x);
+                    ships -= (1 / shipSpawn.localScale.x);
                     if (ships < 1)
                     {
                         gameObject.tag = "Player";
@@ -236,7 +243,7 @@ public class PlayerPlanet : MonoBehaviour {
 	private void ProduceShips ()
 	{
 		if (ships < shipCapacity && gameObject.tag != "Neutral") {
-			ships += Time.deltaTime * (float)productionRate * PRODUCTION_MODIFIER;
+			ships += Time.deltaTime * productionRate * PRODUCTION_MODIFIER;
 		}
 	}
 
