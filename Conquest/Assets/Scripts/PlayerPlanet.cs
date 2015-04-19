@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -114,6 +114,16 @@ public class PlayerPlanet : MonoBehaviour {
                 mouseOn = true;
                 Target();
             }
+			else if(Input.GetMouseButtonDown(1))//if right click, send reinforcements
+			{
+				foreach (GameObject i in planets)
+				{
+					if (i.tag == "Player" && i.GetComponent<PlayerPlanet>().isTargeted)
+					{
+						i.SendMessage("SendPlayerShips", gameObject.transform);
+					}
+				}
+			}
         }
         else
         {
@@ -221,6 +231,17 @@ public class PlayerPlanet : MonoBehaviour {
 			ships--;
 		}
 	}
+
+	public void SendPlayerShips(Transform t)
+	{
+		//int send = ships * ;
+		while (ships > 1) {
+			// This very long line essentially spawns a ship and tells it where to go.
+			(Instantiate (ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage ("changeTarget", t);
+			ships--;
+		}
+	}
+
 
 	public void IncrementShips()
 	{
