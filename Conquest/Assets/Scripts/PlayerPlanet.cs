@@ -68,16 +68,7 @@ public class PlayerPlanet : MonoBehaviour {
             if (Input.GetMouseButtonDown(0) && target && isTargeted && ships > 1)
             {
 
-                double send = ships - (ships * (SHIP_SEND_AMOUNT * amount));
-                while (ships > send)
-                {
-                    // This very long line essentially spawns a ship and tells it where to go.
-                    if (gameObject.tag == "Player")
-                    {
-                        (Instantiate(ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage("changeTarget", target);
-                        ships--;
-                    }
-                }
+                SendPlayerShips(target);
                 RemoveTarget();
             }
             else
@@ -234,8 +225,10 @@ public class PlayerPlanet : MonoBehaviour {
 
 	public void SendPlayerShips(Transform t)
 	{
-		//int send = ships * ;
-		while (ships > 1) {
+        //int send = ships * ;
+        double send = ships - (ships * (SHIP_SEND_AMOUNT * amount));
+        while (ships > send)
+        {
 			// This very long line essentially spawns a ship and tells it where to go.
 			(Instantiate (ship, shipSpawn.position, shipSpawn.rotation) as GameObject).SendMessage ("changeTarget", t);
 			ships--;
