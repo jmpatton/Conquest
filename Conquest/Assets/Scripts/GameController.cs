@@ -9,8 +9,8 @@ public class GameController : MonoBehaviour {
     public AudioClip gameOverAudio;//Audio clip for gamve over audio.
     //Private Variables
     private int count;//used to compare player planets to total planets.
-	private const float AITIMER = 3.0f;//determines how often the AI will make a turn
-	private const float AIRESENDTIMER = 6.0f;//determines how long the AI waits before resending to a planet
+	private float AITIMER = 3.0f;//determines how often the AI will make a turn
+	private float AIRESENDTIMER = 6.0f;//determines how long the AI waits before resending to a planet
 	private Transform LastAITarget;//keeps the AI from sending to the same planet twice in a row
 	private float timer = 0f;
     private float resendTimer = 0f;
@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour {
     private Button resumeButton;
     private Text resumeText;
     private int difficulty;
+    private int current_diff = PlayerPrefs.GetInt("Difficulty"); // Makes it so you can see if difficulty has changed.
     private Button diffButton;
     private Text diffText;
     private const int EASY = 1;
@@ -35,7 +36,8 @@ public class GameController : MonoBehaviour {
         planets.AddRange(GameObject.FindGameObjectsWithTag("Player"));
         planets.AddRange(GameObject.FindGameObjectsWithTag("Enemy"));
         planets.AddRange(GameObject.FindGameObjectsWithTag("Neutral"));
-        //Makes the text and buttons invisible and unclickable.
+        AITIMER = AITIMER * 2 / PlayerPrefs.GetInt("Difficulty");
+        AIRESENDTIMER = AIRESENDTIMER * 2 / PlayerPrefs.GetInt("Difficulty");
 
 
 	}
@@ -47,6 +49,13 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (difficulty != current_diff)
+        {
+            AITIMER = AITIMER * 2 / PlayerPrefs.GetInt("Difficulty");
+            AIRESENDTIMER = AIRESENDTIMER * 2 / PlayerPrefs.GetInt("Difficulty");
+            current_diff = difficulty;
+        }
+
         if (Input.GetButtonDown("Pause"))
         {
             Pause();
@@ -292,6 +301,7 @@ public class GameController : MonoBehaviour {
         diffButton = but;
         diffButton.enabled = false;
         diffButton.GetComponent<CanvasRenderer>().SetAlpha(0);
+        diffButton.onClick.AddListener(() => { Difficulty(); });
     }
 
     void Pause()
